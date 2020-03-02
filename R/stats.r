@@ -144,6 +144,7 @@ StatDensityCircular <- ggplot2::ggproto(
         data$x,
         units = self$x_datacircularp$units,
         type = self$x_datacircularp$type,
+        
         template = self$x_datacircularp$template,
         modulo = self$x_datacircularp$modulo,
         zero = self$x_datacircularp$zero,
