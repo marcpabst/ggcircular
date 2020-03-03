@@ -72,22 +72,23 @@ StatAnnotateAxisCircular <-
   ggplot2::ggproto(
     "StatAnnotateAxisCircular",
     ggplot2::Stat,
-    compute_group = function(self, data, scales, n = 4) {
-      if (self$x_datacircularp$units == "degrees") {
+    compute_group = function(self, data, scales, n = 4, unit = "degree") {
+      #browser()
+      if (unit == "degrees") {
         data.frame(
           x = seq(0, 270, by = 90),
           y = .7,
           label = seq(0, 270, by = 90)
         )
       }
-      else if(self$x_datacircularp$units == "radians") {
+      else if(unit == "radians") {
         data.frame(
           x = seq(0, 1.5, by = 0.5)*pi,
           y = .7,
           label = c("2\u03C0", "½\u03C0", "1\u03C0", "1½\u03C0")
         )
       }
-      else if(self$x_datacircularp$units == "hours") {
+      else if(unit == "hours") {
         data.frame(
           x = seq(0, 23, by = 1),
           y = .7,
@@ -107,16 +108,15 @@ StatAnnotateAxisCircular <-
     )
   )
 
-anootation_axis_circular = function(mapping = NULL, n = 4, ...) {
+annotation_axis_circular = function(mapping = NULL, n = 4, unit = "degree", ...) {
   ggplot2::layer(
     data = data,
     mapping = mapping,
     stat = StatAnnotateAxisCircular,
     position = "identity",
     geom = "text",
-    inherit.aes = TRUE,
-    params = list(...),
-    layer_class = LayerCircular
+    inherit.aes = FALSE,
+    params = list(n=n, unit=unit, ...)
   )
 }
 
@@ -138,13 +138,14 @@ GeomPointCircular <- ggplot2::ggproto("GeomPointCircular", ggplot2::GeomPoint,
 StatDensityCircular <- ggplot2::ggproto(
   "StatDensityCircular",
   ggplot2::Stat,
-  compute_group = function(self, data, scales, bandwith = 25) {
+  compute_group = function(self, data, scales, bandwith = 25, multiply = 1) {
+    browser()
     if (!is.null(self$x_datacircularp))
       data$x = circular(
         data$x,
         units = self$x_datacircularp$units,
         type = self$x_datacircularp$type,
-        
+
         template = self$x_datacircularp$template,
         modulo = self$x_datacircularp$modulo,
         zero = self$x_datacircularp$zero,
@@ -157,7 +158,7 @@ StatDensityCircular <- ggplot2::ggproto(
       to = 2 * pi,
       n = 1000
     )
-    data.frame(x = dens_dat$x, density = dens_dat$y)
+    data.frame(x = dens_dat$x, density = dens_dat$y * multiply)
   },
 
   required_aes = c("x"),
@@ -173,6 +174,7 @@ stat_density_circular <-
            show.legend = NA,
            inherit.aes = TRUE,
            bandwith = 25,
+           multiply = 1,
            ...) {
     ggplot2::layer(
       stat = StatDensityCircular,
@@ -182,7 +184,7 @@ stat_density_circular <-
       position = position,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
-      params = list(bandwith = bandwith, na.rm = na.rm, ...),
+      params = list(bandwith = bandwith, multiply = multiply, na.rm = na.rm, ...),
       layer_class = LayerCircular
     )
   }

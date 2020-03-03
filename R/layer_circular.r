@@ -7,8 +7,13 @@ LayerCircular <- ggplot2::ggproto(
   compute_aesthetics  = function(self, data, plot) {
     data = ggplot2::ggproto_parent(ggplot2:::Layer, self)$compute_aesthetics(data, plot)
     self$stat$x_datacircularp = NULL
-    if (is.circular(data$x))
-      self$stat$x_datacircularp = circularp(data$x)
+
+    if (circular::is.circular(data$x))
+      self$stat$x_datacircularp = circular::circularp(data$x)
+    else
+    {
+      rlang::abort("'x' must be circular.")
+    }
     return(data)
   }
 )
