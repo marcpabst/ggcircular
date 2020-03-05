@@ -139,7 +139,7 @@ StatDensityCircular <- ggplot2::ggproto(
   "StatDensityCircular",
   ggplot2::Stat,
   compute_group = function(self, data, scales, bandwith = 25, multiply = 1) {
-    browser()
+    #browser()
     if (!is.null(self$x_datacircularp))
       data$x = circular(
         data$x,
