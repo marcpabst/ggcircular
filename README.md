@@ -1,6 +1,6 @@
 # ggcircular
 ## Plotting circular data with ggplot2
-For working with circular (or directional) data, the `circular` package provides a data type to hold values that represent positions across a circle. The `circular` package comes with basic plotting functions but compared to ggplot2 it lacks a lot of flexibility. GGplot2 supports circular coordinate systems (using `coord_polar()`). However, bringing those two together can quite complex, because ordinary stats like `stats_density()` will not work correctly with circular data.
+For working with circular (or directional) data, the `circular` package provides a data type to hold values that represent positions across a circle. The `circular` package comes with basic plotting functions, but compared to ggplot2 it lacks a lot of flexibility. GGplot2 supports circular coordinate systems (using `coord_polar()`). However, bringing these two together can actually be quite complex, because ordinary stats like `stats_density()` will not work correctly with circular data.
 
 GGcircular tries to make workig with such data easier while alowing you to use the flexibility of ggplot2. It introduces a number of new geoms and stats:
 
